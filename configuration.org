@@ -13,7 +13,7 @@ Use =use-package= to manage packages.
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))
-  
+
   (require 'use-package)
   (setq load-prefer-newer t)
 
@@ -89,7 +89,7 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
   ;; (when (fboundp 'global-prettify-symbols-mode)
   ;;   (global-prettify-symbols-mode))
 #+END_SRC
-	      
+
 * Fonts
 #+BEGIN_SRC emacs-lisp
 ;; (set-fontset-font "fontset-default" 'han '("STHeiti"))
@@ -114,7 +114,7 @@ Use ivy for navigation.
 
 #+BEGIN_SRC emacs-lisp
 (use-package counsel
-  :ensure t 
+  :ensure t
   :bind
   (("M-y" . counsel-yank-pop)
    :map ivy-minibuffer-map
@@ -176,34 +176,56 @@ Use ivy for navigation.
     ;; how much I like this command. Only copy it if that's what you want.
     (define-key ctl-x-map "n" #'narrow-or-widen-dwim)
   #+END_SRC
+* Use company-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :defer t
+    :diminish company-mode
+    :init (global-company-mode)
+    :config
+    (progn
+      ;; Use Company for completion
+      (bind-key [remap completion-at-point] #'company-complete company-mode-map)
+
+      (setq company-tooltip-align-annotations t
+	    ;; Easy navigation to candidates with M-<n>
+	    company-show-numbers t)
+      (setq company-dabbrev-downcase nil)))
+#+END_SRC
 * Evil mode
 Use evil mode everywhere.
 
 #+BEGIN_SRC emacs-lisp
-(use-package evil
-  :ensure t
-  :config
-  (evil-mode 1)
-
-  (use-package evil-leader
+  (use-package evil
     :ensure t
     :config
-    (global-evil-leader-mode))
+    (evil-mode 1)
 
-  (use-package evil-surround
-    :ensure t
-    :config
-    (global-evil-surround-mode))
+    (use-package evil-leader
+      :ensure t
+      :config
+      (global-evil-leader-mode))
 
-  (use-package evil-indent-textobject
-    :ensure t))
+    (use-package evil-surround
+      :ensure t
+      :config
+      (global-evil-surround-mode))
+
+    (use-package evil-commentary
+      :ensure t
+      :config
+      (evil-commentary-mode))
+
+    (use-package evil-indent-textobject
+      :ensure t))
 #+END_SRC
 
 * Org mode
 ** Org look and feel
   #+BEGIN_SRC emacs-lisp
     ;; (setq org-ellipsis " ▼")
-    (setq org-ellipsis "⤵")
+    (setq org-ellipsis " ⤵")
     (use-package org-bullets
       :ensure t
       :config
@@ -213,7 +235,7 @@ Use evil mode everywhere.
   #+BEGIN_SRC emacs-lisp
     (require 'ox-beamer)
     (setq org-latex-pdf-process '("xelatex -interaction nonstopmode %f"
-				  "xelatex -interaction nonstopmode %f")) 
+				  "xelatex -interaction nonstopmode %f"))
   #+END_SRC
 ** Reveal.js
   #+BEGIN_SRC emacs-lisp
@@ -243,7 +265,7 @@ Use evil mode everywhere.
      ("j" "Journal" entry (file+olp+datetree "~/Dropbox/journal.org")
       "* %?\nEntered on %U\n  %i\n  %a")))
   #+END_SRC
-  
+
 * Exec path from shell
   Set env vars from shell.
 #+BEGIN_SRC emacs-lisp
@@ -331,6 +353,32 @@ Use evil mode everywhere.
 * Python
 ** TODO use company mode for code completion
 ** TODO use anacoda mode
+* Rust
+#+BEGIN_SRC emacs-lisp
+  (use-package rust-mode
+    :ensure t
+    :config
+    (use-package racer
+      :ensure t)
+
+    (use-package cargo
+      :ensure t)
+
+    (use-package flycheck-rust
+      :ensure t)
+
+    (add-hook 'rust-mode-hook #'racer-mode)
+    (add-hook 'racer-mode-hook #'eldoc-mode)
+    (add-hook 'racer-mode-hook #'company-mode)
+    (add-hook 'rust-mode-hook #'cargo-minor-mode)
+    (add-hook 'rust-mode-hook #'electric-pair-mode)
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+
+    (setq racer-rust-src-path
+	  "~/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/")
+    (setq cargo-process--command-flags "--color auto")
+    (setq rust-format-on-save t))
+#+END_SRC
 * Other misc stuff
   #+BEGIN_SRC emacs-lisp
     (use-package keyfreq
@@ -346,7 +394,7 @@ Use evil mode everywhere.
 	(global-set-key [remap other-window] 'ace-window)
 	(custom-set-faces
 	 '(aw-leading-char-face
-	   ((t (:inherit ace-jump-face-foreground :height 3.0))))) 
+	   ((t (:inherit ace-jump-face-foreground :height 3.0)))))
 	))
 
     (use-package beacon
