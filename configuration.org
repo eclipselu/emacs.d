@@ -117,6 +117,7 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
   ;; (set-fontset-font "fontset-default" 'han '("STHeiti"))
   ;; (set-default-font "Source Code Pro 14")
   (add-to-list 'default-frame-alist '(font . "Source Code Pro-14"))
+  (set-fontset-font "fontset-default" 'han '("PingFang SC"))
 #+END_SRC
 
 * Theme
