@@ -109,6 +109,9 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
   (global-set-key (kbd "<f5>") 'revert-buffer)
   ;; (when (fboundp 'global-prettify-symbols-mode)
   ;;   (global-prettify-symbols-mode))
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  (split-window-horizontally)
+
 #+END_SRC
 
 * Fonts
@@ -116,7 +119,7 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
 #+BEGIN_SRC emacs-lisp
   ;; (set-fontset-font "fontset-default" 'han '("STHeiti"))
   ;; (set-default-font "Source Code Pro 14")
-  (add-to-list 'default-frame-alist '(font . "Source Code Pro-14"))
+  (add-to-list 'default-frame-alist '(font . "SauceCodePro Nerd Font 14"))
   (set-fontset-font "fontset-default" 'han '("PingFang SC"))
 #+END_SRC
 
@@ -124,12 +127,20 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
 Use solarized dark theme.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package color-theme
-    :ensure t
-    :config
-    (use-package color-theme-sanityinc-solarized
-      :ensure t)
-    (load-theme 'sanityinc-solarized-light t))
+  ;; (use-package color-theme-modern
+  ;;   :ensure t
+  ;;   :config
+  ;;   (use-package color-theme-sanityinc-solarized
+  ;;     :ensure t)
+  ;;   (load-theme 'sanityinc-solarized-light t))
+  (use-package naysayer-theme
+     :ensure t
+     :config
+     (load-theme 'naysayer t))
+  ;; (use-package timu-spacegrey-theme
+  ;;   :ensure t
+  ;;   :config
+  ;;   (load-theme 'timu-spacegrey t))
 #+END_SRC
 
 * Ivy/Swipe/Counsel
@@ -167,83 +178,6 @@ Use ivy for navigation.
 
     ))
 #+END_SRC
-* Narrow / Widen dwim
-  From: http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html
-
-  #+BEGIN_SRC emacs-lisp
-    ; if you're windened, narrow to the region, if you're narrowed, widen
-    ; bound to C-x n
-    (defun narrow-or-widen-dwim (p)
-      "If the buffer is narrowed, it widens. Otherwise, it narrows intelligently.
-    Intelligently means: region, org-src-block, org-subtree, or defun,
-    whichever applies first.
-    Narrowing to org-src-block actually calls `org-edit-src-code'.
-
-    With prefix P, don't widen, just narrow even if buffer is already
-    narrowed."
-      (interactive "P")
-      (declare (interactive-only))
-      (cond ((and (buffer-narrowed-p) (not p)) (widen))
-	    ((region-active-p)
-	     (narrow-to-region (region-beginning) (region-end)))
-	    ((derived-mode-p 'org-mode)
-    ;; `org-edit-src-code' is not a real narrowing command.
-    ;; Remove this first conditional if you don't want it.
-	     (cond ((org-at-block-p)
-		    (org-narrow-to-block))
-		   (t (org-narrow-to-subtree))))
-	    (t (narrow-to-defun))))
-
-    ;; (define-key endless/toggle-map "n" #'narrow-or-widen-dwim)
-    ;; This line actually replaces Emacs' entire narrowing keymap, that's
-    ;; how much I like this command. Only copy it if that's what you want.
-    (define-key ctl-x-map "n" #'narrow-or-widen-dwim)
-  #+END_SRC
-* Use company-mode
-#+BEGIN_SRC emacs-lisp
-  (use-package company
-    :ensure t
-    :defer t
-    :diminish company-mode
-    :init (global-company-mode)
-    :config
-    (progn
-      ;; Use Company for completion
-      (bind-key [remap completion-at-point] #'company-complete company-mode-map)
-
-      (setq company-tooltip-align-annotations t
-	    ;; Easy navigation to candidates with M-<n>
-	    company-show-numbers t)
-      (setq company-dabbrev-downcase nil)))
-#+END_SRC
-* Evil mode
-Use evil mode everywhere.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package evil
-    :ensure t
-    :config
-    (evil-mode 1)
-
-    (use-package evil-leader
-      :ensure t
-      :config
-      (global-evil-leader-mode))
-
-    (use-package evil-surround
-      :ensure t
-      :config
-      (global-evil-surround-mode))
-
-    (use-package evil-commentary
-      :ensure t
-      :config
-      (evil-commentary-mode))
-
-    (use-package evil-indent-textobject
-      :ensure t))
-#+END_SRC
-
 * Org mode
 ** Org look and feel
   #+BEGIN_SRC emacs-lisp
@@ -253,184 +187,4 @@ Use evil mode everywhere.
       :ensure t
       :config
       (add-hook 'org-mode-hook (lambda() (org-bullets-mode 1))))
-  #+END_SRC
-** LaTeX
-  #+BEGIN_SRC emacs-lisp
-    (require 'ox-beamer)
-    (setq org-latex-pdf-process '("xelatex -interaction nonstopmode %f"
-				  "xelatex -interaction nonstopmode %f"))
-  #+END_SRC
-** Reveal.js
-  #+BEGIN_SRC emacs-lisp
-    (use-package ox-reveal
-      :ensure ox-reveal
-      :config
-      (use-package htmlize
-	:ensure t))
-    (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-    (setq org-reveal-mathjax t)
-  #+END_SRC
-** Org Capture
-  #+BEGIN_SRC emacs-lisp
-    (setq org-capture-templates
-	  '(("a" "Appointment" entry (file  "~/Dropbox/orgfiles/agenda.org" )
-	     "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
-	    ("b" "Blog idea" entry (file+headline "~/Dropbox/orgfiles/i.org" "Blog Topics:")
-	     "* %?\n%T" :prepend t)
-	    ("t" "To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
-	     "* TODO %?\n%u" :prepend t)
-	    ("n" "Note" entry (file+headline "~/Dropbox/orgfiles/i.org" "Note space")
-	     "* %?\n%u" :prepend t)))
-  #+END_SRC
-
-** Journal
-   #+BEGIN_SRC emacs-lisp
-     (use-package org-journal
-       :ensure t
-       :config
-       (setq org-journal-dir "~/Dropbox/Diary/journal")
-       (setq org-journal-file-format "%Y-%m-%d.org")
-       (setq org-journal-date-format "%Y-%m-%d, %A"))
-   #+END_SRC
-* Exec path from shell
-  Set env vars from shell.
-#+BEGIN_SRC emacs-lisp
-  (use-package exec-path-from-shell
-    :ensure t
-    :config
-    (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE"))
-      (add-to-list 'exec-path-from-shell-variables var))
-    (when (memq window-system '(mac ns x))
-      (exec-path-from-shell-initialize)))
-#+END_SRC
-* Git
-#+BEGIN_SRC emacs-lisp
-  (use-package git-blamed
-    :ensure t)
-
-  (use-package gitignore-mode
-    :ensure t)
-
-  (use-package gitconfig-mode
-    :ensure t)
-
-  (use-package fullframe
-    :ensure t)
-
-  ;; magit
-  (use-package magit
-    :ensure t
-    :bind
-    (("C-x g" . magit-status)
-     ("C-x M-g" . magit-dispatch-popup))
-    :config
-    (use-package evil-magit
-      :ensure t)
-
-    (setq-default magit-diff-refine-hunk t)
-    (fullframe magit-status magit-mode-quit-window))
-
-  ;; edit git commit messages
-  ;; make magit to be able to deal with git commit, git rebase, etc
-  (use-package git-commit
-    :ensure t
-    :config
-    (add-hook 'git-commit-mode-hook 'goto-address-mode))
-#+END_SRC
-* Flycheck
-#+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-    :ensure t
-    :init
-    (global-flycheck-mode t))
-#+END_SRC
-* Yasnippet
-  #+BEGIN_SRC emacs-lisp
-    (use-package yasnippet
-      :ensure t
-      :diminish yas-minor-mode
-      :init
-      (use-package yasnippet-snippets
-	:ensure t)
-      (yas-global-mode 1))
-  #+END_SRC
-* Projectile and dumb-jump
-#+BEGIN_SRC emacs-lisp
-  (use-package projectile
-    :ensure t
-    :config
-    (projectile-global-mode)
-    (setq projectile-completion-system 'ivy))
-
-  (use-package counsel-projectile
-    :ensure t
-    :config
-    (counsel-projectile-mode))
-
-  (use-package dumb-jump
-    :bind (("M-g o" . dumb-jump-go-other-window)
-	   ("M-g j" . dumb-jump-go)
-	   ("M-g i" . dumb-jump-go-prompt)
-	   ("M-g x" . dumb-jump-go-prefer-external)
-	   ("M-g z" . dumb-jump-go-prefer-external-other-window))
-    :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
-    :ensure t)
-#+END_SRC
-* Python
-** TODO use company mode for code completion
-** TODO use anacoda mode
-* Rust
-#+BEGIN_SRC emacs-lisp
-  (use-package rust-mode
-    :ensure t
-    :config
-    (use-package racer
-      :ensure t)
-
-    (use-package cargo
-      :ensure t)
-
-    (use-package flycheck-rust
-      :ensure t)
-
-    (add-hook 'rust-mode-hook #'racer-mode)
-    (add-hook 'racer-mode-hook #'eldoc-mode)
-    (add-hook 'racer-mode-hook #'company-mode)
-    (add-hook 'rust-mode-hook #'cargo-minor-mode)
-    (add-hook 'rust-mode-hook #'electric-pair-mode)
-    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
-
-    (setq racer-rust-src-path
-	  "~/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/")
-    (setq cargo-process--command-flags "--color auto")
-    (setq rust-format-on-save t))
-#+END_SRC
-* Other misc stuff
-  #+BEGIN_SRC emacs-lisp
-    (use-package keyfreq
-      :ensure t
-      :config
-      (keyfreq-mode 1)
-      (keyfreq-autosave-mode 1))
-
-    (use-package ace-window
-      :ensure t
-      :init
-      (progn
-	(global-set-key [remap other-window] 'ace-window)
-	(custom-set-faces
-	 '(aw-leading-char-face
-	   ((t (:inherit ace-jump-face-foreground :height 3.0)))))
-	))
-
-    (use-package beacon
-      :ensure t
-      :config
-      (beacon-mode 1)
-      (setq beacon-color "#666600"))
-
-    (use-package expand-region
-      :ensure t
-      :bind
-      ("C-=" . er/expand-region))
   #+END_SRC
