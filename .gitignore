@@ -51,3 +51,4 @@ smex-items
 /rake.cache
 /plantuml.jar
 pyim/
+transient/

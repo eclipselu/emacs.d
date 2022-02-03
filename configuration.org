@@ -110,6 +110,10 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
   ;; (when (fboundp 'global-prettify-symbols-mode)
   ;;   (global-prettify-symbols-mode))
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+  ;; make titlebar transparent and the same color as the colorscheme
+  (add-to-list 'default-frame-alist '(ns-appearance . 'dark))
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
   (split-window-horizontally)
 
 #+END_SRC
@@ -124,7 +128,6 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
 #+END_SRC
 
 * Theme
-Use solarized dark theme.
 
 #+BEGIN_SRC emacs-lisp
   ;; (use-package color-theme-modern
@@ -133,10 +136,12 @@ Use solarized dark theme.
   ;;   (use-package color-theme-sanityinc-solarized
   ;;     :ensure t)
   ;;   (load-theme 'sanityinc-solarized-light t))
+
   (use-package naysayer-theme
-     :ensure t
-     :config
-     (load-theme 'naysayer t))
+    :ensure t
+    :config
+    (load-theme 'naysayer t))
+
   ;; (use-package timu-spacegrey-theme
   ;;   :ensure t
   ;;   :config
