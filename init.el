@@ -18,3 +18,7 @@
 
 (org-babel-load-file "~/.emacs.d/configuration.org")
 (put 'narrow-to-region 'disabled nil)
+
+(setq custom-file (locate-user-emacs-file "custom.el"))
+(when (file-exists-p custom-file)
+  (load custom-file))

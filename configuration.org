@@ -99,12 +99,13 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
   (setq inhibit-startup-message t)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
-  ;; (global-hl-line-mode t)
+  (global-hl-line-mode t)
 
   (defalias 'list-buffers 'ibuffer-other-window) ;; type q to quit the ibuffer
-  (setq-default initial-scratch-message nil)
 
-  (global-set-key (kbd "<f5>") 'revert-buffer)
+  (setq-default initial-scratch-message
+		(concat ";; Happy hacking, " user-login-name " - Emacs ♥ you!\n\n"))
+
   ;; (when (fboundp 'global-prettify-symbols-mode)
   ;;   (global-prettify-symbols-mode))
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -128,20 +129,27 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
 * Theme
 
 #+BEGIN_SRC emacs-lisp
+  ;; (use-package color-theme-modern
+  ;;   :ensure t
+  ;;   :config
+  ;;   (use-package color-theme-sanityinc-solarized
+  ;;     :ensure t)
+  ;;   (load-theme 'sanityinc-solarized-light t))
+
   ;; (use-package naysayer-theme
   ;;   :ensure t
   ;;   :config
   ;;   (load-theme 'naysayer t))
 
-  ;; (use-package timu-spacegrey-theme
-  ;;   :ensure t
-  ;;   :config
-  ;;   (load-theme 'timu-spacegrey t))
-
   (use-package hemisu-theme
     :ensure t
     :config
     (load-theme 'hemisu-dark t))
+
+  ;; (use-package timu-spacegrey-theme
+  ;;   :ensure t
+  ;;   :config
+  ;;   (load-theme 'timu-spacegrey t))
 #+END_SRC
 
 * Ivy/Swipe/Counsel
@@ -189,3 +197,22 @@ Use ivy for navigation.
       :config
       (add-hook 'org-mode-hook (lambda() (org-bullets-mode 1))))
   #+END_SRC
+
+
+* Navigation
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<delete>") 'delete-char)
+
+  (global-set-key [f12] 'eval-buffer)
+  (global-set-key [f8] 'goto-line)
+  (global-set-key [f6] 'next-error)
+  (global-set-key (kbd "C-r") 'replace-string)
+  (global-set-key (kbd "M-r") 'query-replace)
+  (global-set-key (kbd "S-z") 'undo)
+  (global-set-key (kbd "C-0") 'delete-window)
+  (global-set-key (kbd "C-1") 'delete-other-windows)
+  (global-set-key (kbd "C-2") 'split-window-vertically)
+  (global-set-key (kbd "C-3") 'split-window-horizontally)
+  (global-set-key (kbd "C-,") 'beginning-of-buffer)
+  (global-set-key (kbd "C-.") 'end-of-buffer)
+#+END_SRC
