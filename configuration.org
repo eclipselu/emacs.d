@@ -99,12 +99,10 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
   (setq inhibit-startup-message t)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
-  (global-hl-line-mode t)
+  ;; (global-hl-line-mode t)
 
   (defalias 'list-buffers 'ibuffer-other-window) ;; type q to quit the ibuffer
-
-  (setq-default initial-scratch-message
-		(concat ";; Happy hacking, " user-login-name " - Emacs ♥ you!\n\n"))
+  (setq-default initial-scratch-message nil)
 
   (global-set-key (kbd "<f5>") 'revert-buffer)
   ;; (when (fboundp 'global-prettify-symbols-mode)
@@ -114,7 +112,7 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
   ;; make titlebar transparent and the same color as the colorscheme
   (add-to-list 'default-frame-alist '(ns-appearance . 'dark))
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-  (split-window-horizontally)
+  ;; (split-window-horizontally)
 
 #+END_SRC
 
@@ -130,22 +128,20 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
 * Theme
 
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package color-theme-modern
+  ;; (use-package naysayer-theme
   ;;   :ensure t
   ;;   :config
-  ;;   (use-package color-theme-sanityinc-solarized
-  ;;     :ensure t)
-  ;;   (load-theme 'sanityinc-solarized-light t))
-
-  (use-package naysayer-theme
-    :ensure t
-    :config
-    (load-theme 'naysayer t))
+  ;;   (load-theme 'naysayer t))
 
   ;; (use-package timu-spacegrey-theme
   ;;   :ensure t
   ;;   :config
   ;;   (load-theme 'timu-spacegrey t))
+
+  (use-package hemisu-theme
+    :ensure t
+    :config
+    (load-theme 'hemisu-dark t))
 #+END_SRC
 
 * Ivy/Swipe/Counsel
