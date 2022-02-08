@@ -129,9 +129,7 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
 * Fonts
 ** TODO setup fallback fonts for other unicode chars
 #+BEGIN_SRC emacs-lisp
-  ;; (set-fontset-font "fontset-default" 'han '("STHeiti"))
-  ;; (set-default-font "Source Code Pro 14")
-  (add-to-list 'default-frame-alist '(font . "SauceCodePro Nerd Font 14"))
+  (set-frame-font "SauceCodePro Nerd Font 14" nil t)
   (set-fontset-font "fontset-default" 'han '("PingFang SC"))
 #+END_SRC
 
@@ -206,6 +204,13 @@ Use ivy for navigation.
       :config
       (add-hook 'org-mode-hook (lambda() (org-bullets-mode 1))))
   #+END_SRC
+
+* Expand region
+#+BEGIN_SRC emacs-lisp
+  (use-package expand-region
+    :ensure t
+    :bind ("C-=" . er/expand-region))
+#+END_SRC
 
 
 * Navigation
