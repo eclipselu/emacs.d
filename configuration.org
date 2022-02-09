@@ -112,8 +112,8 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
 
   (defalias 'list-buffers 'ibuffer-other-window) ;; type q to quit the ibuffer
 
-  (setq-default initial-scratch-message
-		(concat ";; Happy hacking, " user-login-name " - Emacs ♥ you!\n\n"))
+  (setq-default initial-scratch-message nil)
+  (setq initial-major-mode 'fundamental-mode)
 
   ;; (when (fboundp 'global-prettify-symbols-mode)
   ;;   (global-prettify-symbols-mode))
