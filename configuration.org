@@ -65,9 +65,9 @@ Allow access from emacsclient
 No backup files, no autosave files.
 
 #+BEGIN_SRC emacs-lisp
-(setq make-backup-files nil) ; stop creating backup~ files
-(setq auto-save-default nil) ; stop creating #autosave# files
-
+  (setq make-backup-files nil) ; stop creating backup~ files
+  (setq auto-save-default nil) ; stop creating #autosave# files
+  (global-auto-revert-mode 1)
 #+END_SRC
 
 Try packages without installing them.
