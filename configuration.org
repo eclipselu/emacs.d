@@ -203,6 +203,7 @@ Use ivy for navigation.
       :ensure t
       :config
       (add-hook 'org-mode-hook (lambda() (org-bullets-mode 1))))
+    (setq org-support-shift-select 'always)
   #+END_SRC
 
 * Expand region
@@ -229,4 +230,11 @@ Use ivy for navigation.
   (global-set-key (kbd "C-3") 'split-window-horizontally)
   (global-set-key (kbd "C-,") 'beginning-of-buffer)
   (global-set-key (kbd "C-.") 'end-of-buffer)
+
+  ;; use C-<arrow keys> to navigate between windows
+  ;; (global-set-key (kbd "C-<left>")  'windmove-left)
+  ;; (global-set-key (kbd "C-<right>") 'windmove-right)
+  ;; (global-set-key (kbd "C-<up>")    'windmove-up)
+  ;; (global-set-key (kbd "C-<down>")  'windmove-down)
+  (windmove-default-keybindings 'control)
 #+END_SRC
