@@ -100,6 +100,16 @@ Clipboard configuration, donot tamper system clipboard with emacs clipboard. Use
   (simpleclip-mode 1))
 #+END_SRC
 
+Undo tree
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :ensure t
+    :bind (("s-z" . undo)
+	   ("s-S-z" . undo-tree-redo))
+    :config (global-undo-tree-mode 1)
+  )
+#+END_SRC
+
 * Interface tweaks
 ** TODO make pretty symbol mode available only in elisp
    http://ergoemacs.org/emacs/emacs_pretty_lambda.html
