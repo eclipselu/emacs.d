@@ -119,7 +119,7 @@ Undo tree
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (global-hl-line-mode -1)
-  
+
   (setq ring-bell-function 'ignore) ;; disable ring when error
 
   (defalias 'list-buffers 'ibuffer-other-window) ;; type q to quit the ibuffer
@@ -135,6 +135,8 @@ Undo tree
   (add-to-list 'default-frame-alist '(ns-appearance . 'dark))
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
   ;; (split-window-horizontally)
+
+  (setq-default tab-width 4)
 
 #+END_SRC
 

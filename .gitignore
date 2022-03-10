@@ -19,3 +19,6 @@ site-lisp/package/
 /recentf
 transient/
 .lsp-session*
+.DS_Store
+smex-items
+projectile-bookmarks.eld
